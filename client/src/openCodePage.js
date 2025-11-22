@@ -28,6 +28,7 @@ export function createHighlightedPageHtml(
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>${escapeHtml(title)}</title>
+<link rel="icon" href="/logo.jpg">
 <link rel="stylesheet" href="${fontUrl}">
 <link rel="stylesheet" href="${prismCss}">
 <style>
@@ -230,7 +231,7 @@ export function createHighlightedPageHtml(
       <div class="logo">CC</div>
       <div class="title">
         <div class="main">${escapeHtml(title)}</div>
-        <div class="sub">Deep Orange Gradient Preview</div>
+        <div class="sub">History Generation</div>
       </div>
     </div>
     <div class="controls">
@@ -263,11 +264,9 @@ export function createHighlightedPageHtml(
   )}">${escaped}</code></pre>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:4px;">
-        <div style="color:var(--text-secondary); font-size:12px;">Rendered with Prism • Theme: ${escapeHtml(
-          theme
-        )}</div>
+       
         <div style="display:flex; gap:8px;">
-          <button id="openInNew" class="btn secondary" style="font-size:13px; padding:6px 10px;">Open in New Tab</button>
+          <!-- "Open in New Tab" button removed as requested -->
         </div>
       </div>
     </div>
@@ -286,20 +285,20 @@ export function createHighlightedPageHtml(
         }</strong></div></div>
         <div class="action-row">
           <div class="badge">Read-only</div>
-          <div class="badge">Prism.js</div>
+          
         </div>
       </div>
 
       <div class="side-card">
-        <h4>Tips</h4>
+        <h4>Snippet Guide</h4>
         <div style="color:var(--text-secondary); font-size:13px; line-height:1.5;">
-          The Copy button copies the **raw text** (not the HTML) to your clipboard. Use 'Download' to save the file. 'Raw' opens the plain text in a new tab.
+          This page shows your generated code in read-only mode. Use Copy to copy the raw text, Download to save it, and Raw to view the plain file in a new tab.
         </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">Elegantly styled with deep orange gradients.</div>
+  <div class="footer">Designed & Created by Shakti Priya 🧡</div>
 
   <script>
     (function() {
@@ -307,18 +306,10 @@ export function createHighlightedPageHtml(
       const copyBtn = document.getElementById('copyBtn');
       const downloadLink = document.getElementById('downloadLink');
       const openRaw = document.getElementById('openRaw');
-      const openInNew = document.getElementById('openInNew');
       const blob = new Blob([rawText], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       downloadLink.href = url;
       openRaw.href = url;
-      openInNew.addEventListener('click', () => {
-        const w = window.open();
-        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(
-          title
-        )}</title></head><body style="background:#07080a;color:#e8eef6;padding:20px;white-space:pre;font-family:monospace;">'+rawText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</body></html>');
-        w.document.close();
-      });
       copyBtn.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(rawText);

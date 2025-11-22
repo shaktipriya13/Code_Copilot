@@ -58,10 +58,6 @@ export default function App() {
                 Generate code instantly — modern AI code assistant
               </p>
             </div>
-            <div className="text-sm text-slate-400">
-              <div>Frontend: Vite + React 19 + Tailwind</div>
-              <div>Backend: Node.js + Prisma + MySQL</div>
-            </div>
           </div>
         </header>
 
