@@ -385,26 +385,9 @@ This project has been deployed to Render. Key deployment notes (exact working se
 - **Database:** PostgreSQL managed by Render (DATABASE_URL provided by Render)
 - **CORS:** `FRONTEND_ORIGIN` must exactly match frontend URL (including protocol)
 
----
+----
 
-## **12. Video Demo (2–3 Minutes)**
-
-A short walkthrough video demonstrating:
-
-- Entering a natural-language prompt
-- Selecting a programming language
-- Generating code via the backend API
-- Viewing the response
-- Confirming creation in the database
-- Viewing paginated history
-
-```
-Video Demo Link: https://<your-video-link>](https://drive.google.com/file/d/1lvRdFtG4qycsiHMU9XycjYrXZGorm28w/view?usp=sharing
-```
-
----
-
-## **13. Deliverables Checklist**
+## **12. Deliverables Checklist**
 
 This section confirms the assignment’s required deliverables:
 
@@ -428,7 +411,7 @@ This section confirms the assignment’s required deliverables:
 
 ---
 
-## **14. Migration Scripts / SQL Schema**
+## **13. Migration Scripts / SQL Schema**
 
 Although Prisma is used with `prisma db push`, the assignment requires at least one SQL schema or migration script.
 The following SQL represents the schema of this project:
@@ -463,7 +446,7 @@ These indexes improve pagination and filtering performance.
 
 ---
 
-## **15. Submission Checklist (Final)**
+## **14. Submission Checklist (Final)**
 
 - README (this file)
 - Prisma schema
@@ -475,4 +458,5 @@ These indexes improve pagination and filtering performance.
 - Environment variables documented
 
 ---
+
 
