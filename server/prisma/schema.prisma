@@ -3,26 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"  // ← CHANGED FROM mysql
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  // Remove shadowDatabaseUrl — not needed in production
 }
 
-
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
   password   String
   generations Generation[]
-  createdAt  DateTime     @default(now())
+  createdAt  DateTime  @default(now())
+
+  @@map("users")
 }
 
 model Language {
-  id         Int          @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
-  slug       String       @unique
+  slug       String    @unique
   extension  String
   generations Generation[]
+
+  @@map("languages")
 }
 
 model Generation {
@@ -32,7 +35,7 @@ model Generation {
   language    Language @relation(fields: [languageId], references: [id])
   languageId  Int
   prompt      String
-  code        String   @db.LongText
+  code        String   @db.Text
   modelName   String?
   tokensUsed  Int?
   createdAt   DateTime @default(now())
@@ -40,4 +43,5 @@ model Generation {
   @@index([createdAt])
   @@index([languageId])
   @@index([userId])
+  @@map("generations")
 }

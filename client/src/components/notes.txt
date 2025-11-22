@@ -1,921 +1,136 @@
-i want my frontend application to be modern classy
-and should be orangish-blackissh in colour
+server/.env.example
 
-I am sharing you my frontend files, update eacch one of them to give a classy-orangish look similar to how gemini is bluish-black in color
+# Backend port
+PORT=8000
 
-app.jsx
-// import React from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchLanguages } from "./api.js";
-// import Home from "./pages/Home.jsx";
+# MySQL connection string (example)
+DATABASE_URL="mysql://codecofdsfpilot_user:StrongPassword123!@localhost:3306/codecopilot"
+SHADOW_DATABASE_URL="mysqfsfsdfsfsdfl://root:Shakti@12@localhost:3306/shadowdb"
 
-// export default function App() {
-//   const { data, isLoading, isError, error } = useQuery({
-//     queryKey: ["languages"],
-//     queryFn: fetchLanguages,
-//     staleTime: 1000 * 60 * 5, // 5 minutes
-//   });
+# OpenAI API key
+GEMINI_API_KEY=AIzaSyAIhfsdfsf-KGB_GwYcITFJLq0gFGAxpsNmQX2tc
 
-//   const languages = data?.languages || [];
+# JWT secret for user auth
+JWT_SECRET="EWQS25554cdfsfsdfdXHWSJW4Y53dfjjksf#@$#@$"
 
-//   if (isLoading) {
-//     return (
-//       <div className="min-h-screen grid place-items-center">
-//         <div className="animate-pulse text-2xl font-semibold">
-//           Loading languages…
-//         </div>
-//       </div>
-//     );
-//   }
+# Frontend origin for CORS
+# FRONTEND_ORIGIN=http://fsfsdlocalhost:5173
+FRONTEND_ORIGIN=https://code-copisdfsdlot-mu.vercel.app/
+# Rate limiting
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=30
 
-//   if (isError) {
-//     return (
-//       <div className="min-h-screen grid place-items-center p-4">
-//         <div className="card max-w-xl bg-white shadow-lg rounded-lg p-6">
-//           <h2 className="text-xl font-bold mb-2 text-red-600">
-//             Failed to load
-//           </h2>
-//           <p className="text-gray-700">
-//             Could not fetch languages from backend.
-//             <br />
-//             Make sure your server is running on{" "}
-//             <code className="bg-gray-100 px-2 py-1 rounded">
-//               http://localhost:8000
-//             </code>
-//           </p>
-//           {error && (
-//             <p className="text-sm text-red-500 mt-2">{error.message}</p>
-//           )}
-//         </div>
-//       </div>
-//     );
-//   }
 
-//   return (
-//     <div className="min-h-screen p-6 md:p-12 bg-gray-50">
-//       <div className="max-w-6xl mx-auto">
-//         <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
-//           <div>
-//             <h1 className="text-4xl font-extrabold text-gray-900">
-//               Code Copilot
-//             </h1>
-//             <p className="text-gray-600 mt-1">
-//               Generate code instantly using Gemini 2.5 Flash
-//             </p>
-//           </div>
-//           <div className="text-sm text-gray-500">
-//             <div>Frontend: Vite + React 19 + Tailwind</div>
-//             <div>Backend: Node.js + Prisma + MySQL</div>
-//           </div>
-//         </header>
-
-//         <Home languages={languages} />
-//       </div>
-//     </div>
-//   );
-// }
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchLanguages } from "./api.js";
-import Home from "./pages/Home.jsx";
-import Navbar from "./components/Navbar.jsx";
-
-export default function App() {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["languages"],
-    queryFn: fetchLanguages,
-    staleTime: 1000 * 60 * 5,
-  });
-
-  const languages = data?.languages || [];
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen grid place-items-center">
-        <div className="text-center">
-          <div className="loader mx-auto mb-4" />
-          <div className="text-lg font-semibold">Loading languages…</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="min-h-screen grid place-items-center p-4">
-        <div className="card max-w-xl">
-          <h2 className="text-xl font-bold mb-2 text-red-600">
-            Failed to load
-          </h2>
-          <p className="text-gray-700">
-            Could not fetch languages from backend.
-          </p>
-          {error && (
-            <p className="text-sm text-red-500 mt-2">{error.message}</p>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen p-6 md:p-12">
-      <Navbar />
-
-      <div className="max-w-6xl mx-auto">
-        <header className="mt-6 mb-8 p-6 rounded-xl card">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-4xl font-extrabold">Code Copilot</h1>
-              <p className="text-gray-600 mt-1">
-                Generate code instantly — modern AI code assistant
-              </p>
-            </div>
-            <div className="text-sm text-gray-500">
-              <div>Frontend: Vite + React 19 + Tailwind</div>
-              <div>Backend: Node.js + Prisma + MySQL</div>
-            </div>
-          </div>
-        </header>
-
-        <Home languages={languages} />
-      </div>
-    </div>
-  );
+server/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
 }
 
-home.jsx
-import React from "react";
-import PromptForm from "../components/PromptForm.jsx";
-import HistoryFeed from "../components/HistoryFeed.jsx";
-
-export default function Home({ languages }) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-      {/* Main form */}
-      <div className="lg:col-span-2">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <PromptForm languages={languages} />
-        </div>
-      </div>
-
-      {/* History sidebar */}
-      <div className="lg:col-span-1">
-        <div
-          className="bg-white/60 backdrop-blur-md rounded-xl shadow-lg p-6 border border-white/30 
-                  h-[340px] overflow-y-auto custom-scroll"
-        >
-          <h2 className="text-xl font-bold mb-4">Recent Generations</h2>
-          <HistoryFeed />
-        </div>
-      </div>
-    </div>
-  );
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 
-index.css
-
-@import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --accent-1: 63 94 251; /* blue */
-  --accent-2: 138 35 135; /* magenta */
+model User {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String
+  generations Generation[]
+  createdAt  DateTime     @default(now())
 }
 
-html,
-body,
-#root {
-  height: 100%;
-  background-color: rgba(64, 60, 60, 0.873);
-}
-body {
-  @apply bg-gradient-to-b from-gray-50 via-white to-gray-50 text-gray-800;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial;
+model Language {
+  id         Int          @id @default(autoincrement())
+  name       String
+  slug       String       @unique
+  extension  String
+  generations Generation[]
 }
 
-/* Glass card look */
-.card {
-  @apply bg-white/60 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30;
-}
+model Generation {
+  id          Int      @id @default(autoincrement())
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+  language    Language @relation(fields: [languageId], references: [id])
+  languageId  Int
+  prompt      String
+  code        String   @db.LongText
+  modelName   String?
+  tokensUsed  Int?
+  createdAt   DateTime @default(now())
 
-/* Accent button style */
-.btn-accent {
-  @apply inline-flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-white shadow-md transition-transform;
-  background-image: linear-gradient(
-    90deg,
-    rgba(var(--accent-1) / 1),
-    rgba(var(--accent-2) / 1)
-  );
-}
-.btn-accent:active {
-  transform: translateY(1px);
-}
-
-/* Small utilities */
-.animate-fade-in {
-  animation: fadeIn 260ms ease-in;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Line clamp for prompt in history */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Spinner helper using border utilities */
-:focus {
-  outline: 3px solid rgba(99, 102, 241, 0.12);
-  outline-offset: 3px;
-}
-
-.custom-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-codeviewer.jsx
-import React from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-export default function CodeViewer({ code = "", languageKey = "plaintext" }) {
-  // FINAL SAFETY MAP — covers every possible case
-  const languageMap = {
-    javascript: "javascript",
-    js: "javascript",
-    typescript: "typescript",
-    ts: "typescript",
-    python: "python",
-    py: "python",
-    java: "java",
-    cpp: "cpp",
-    c: "c",
-    "c++": "cpp",
-    go: "go",
-    rust: "rust",
-    ruby: "ruby",
-    php: "php",
-    swift: "swift",
-    kotlin: "kotlin",
-    html: "html",
-    css: "css",
-    json: "json",
-    bash: "bash",
-    shell: "bash",
-    sql: "sql",
-    text: "text",
-    plaintext: "text",
-  };
-
-  const safeLanguage = languageMap[languageKey?.toLowerCase()] || "text";
-
-  if (!code.trim()) {
-    return (
-      <div className="text-center py-10 text-gray-500">
-        No code generated yet
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-lg overflow-hidden border bg-gray-900">
-      <div className="bg-gray-800 px-4 py-2 flex justify-between text-xs text-gray-400">
-        <span>{safeLanguage}</span>
-        <span>{code.trim().split("\n").length} lines</span>
-      </div>
-
-      <SyntaxHighlighter
-        language={safeLanguage}
-        style={oneDark}
-        showLineNumbers
-        wrapLongLines
-        customStyle={{ margin: 0, padding: "1.25rem", background: "#0b1220" }}
-      >
-        {code.trim()}
-      </SyntaxHighlighter>
-    </div>
-  );
+  @@index([createdAt])
+  @@index([languageId])
+  @@index([userId])
 }
 
 
-historyfeed.jsx
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchHistory } from "../api.js";
-import Pagination from "./Pagination.jsx";
-import dayjs from "dayjs";
-import { createHighlightedPageHtml } from "../openCodePage";
-export default function HistoryFeed() {
-  const [page, setPage] = useState(1);
-  const limit = 6;
+server/src/index.js
+import dotenv from "dotenv";
+dotenv.config();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["history", page],
-    queryFn: () => fetchHistory(page, limit),
-    keepPreviousData: true,
-    staleTime: 1000 * 30,
-  });
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
-  const generations = data?.data ?? [];
-  const total = data?.total ?? 0;
+import { authMiddleware } from "./middleware/auth.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { validate } from "./middleware/validate.js";
 
-  if (isLoading)
-    return <div className="text-sm text-gray-500">Loading history…</div>;
-  if (isError)
-    return <div className="text-red-600 text-sm">Failed to load history</div>;
-  if (generations.length === 0) {
-    return (
-      <div className="text-sm text-gray-500">
-        No history yet. Generate your first snippet!
-      </div>
-    );
-  }
+import {
+  registerHandler,
+  loginHandler,
+  registerSchema,
+  loginSchema,
+} from "./controllers/auth.controller.js";
 
-  // Normalize language slugs for Prism (so we load the correct prism-<lang>.js)
-  const mapLanguageForPrism = (lang) => {
-    if (!lang) return "text";
-    const l = String(lang).toLowerCase();
-    const map = {
-      "c++": "cpp",
-      "c#": "csharp",
-      cs: "csharp",
-      js: "javascript",
-      ts: "typescript",
-      py: "python",
-      sh: "bash",
-      shell: "bash",
-      bash: "bash",
-      json: "json",
-      html: "html",
-      css: "css",
-      cpp: "cpp",
-    };
-    return map[l] || l;
-  };
+import { listLanguages } from "./controllers/languages.controller.js";
+import { generateHandler } from "./controllers/generate.controller.js";
+import { historyHandler } from "./controllers/history.controller.js";
 
-  // Truncate code to first N lines with ellipsis for small previews
-  const getPreviewText = (code = "", maxLines = 8) => {
-    const lines = String(code || "").split("\n");
-    if (lines.length <= maxLines) return code;
-    const preview = lines.slice(0, maxLines).join("\n");
-    return preview + "\n\n...";
-  };
+const app = express();
 
-  // Developer-provided local screenshot path (will be converted to URL by your deploy pipeline)
-  const developerScreenshot =
-    "/mnt/data/06417456-293a-469f-b335-1b0d8a14f400.png";
+const FRONTEND = process.env.FRONTEND_ORIaGIN || "http://localhost:5173";
+app.use(cors({ origin: FRONTEND }));
+app.use(helmet());
+app.use(express.json({ limit: "1mb" }));
 
-  // Open a full highlighted page in new tab using the helper
-  const openFullInNewTab = (gen) => {
-    const code = gen.code || "";
-    const rawLang = gen.language?.slug || gen.language?.name || "text";
-    const prismLang = mapLanguageForPrism(rawLang);
+// attach user if token provided
+app.use(authMiddleware);
 
-    const html = createHighlightedPageHtml(code, {
-      title: gen.prompt || `snippet.${prismLang}`,
-      language: prismLang,
-      filename: `snippet.${prismLang === "text" ? "txt" : prismLang}`,
-      theme: "okaidia", // change to your preferred Prism theme if desired
-      screenshotUrl: gen.screenshot || developerScreenshot,
-    });
+// rate limit for generate endpoint
+const limiter = rateLimit({
+  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 60 * 1000,
+  max: Number(process.env.RATE_LIMIT_MAX) || 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    // open in new tab
-    window.open(url, "_blank", "noopener,noreferrer");
-    // cleanup after a short delay
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-  };
+// Routes
+app.get("/api/languages", listLanguages);
 
-  return (
-    <>
-      <div className="space-y-4">
-        {generations.map((g) => (
-          <div
-            key={g.id}
-            className="border rounded-lg p-4 bg-white/60 backdrop-blur-sm hover:shadow-md transition"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <span className="font-medium text-sm">
-                {g.language?.name ?? "Unknown"}
-              </span>
-              <span className="text-xs text-gray-500">
-                {dayjs(g.createdAt).format("MMM D, YYYY HH:mm")}
-              </span>
-            </div>
+app.post("/api/auth/register", validate(registerSchema), registerHandler);
+app.post("/api/auth/login", validate(loginSchema), loginHandler);
 
-            <p className="text-sm text-gray-700 line-clamp-2 mb-3 font-mono">
-              {g.prompt}
-            </p>
+// generate
+app.post("/api/generate", limiter, generateHandler);
 
-            <div className="flex items-center gap-3">
-              {/* View code: open full highlighted page in new tab */}
-              <button
-                onClick={() => openFullInNewTab(g)}
-                className="text-sm text-blue-600 hover:underline flex items-center gap-2"
-              >
-                ▶ View code →
-              </button>
+// history
+app.get("/api/history", historyHandler);
 
-              {/* Copy code to clipboard */}
-              <button
-                onClick={() => {
-                  navigator.clipboard
-                    ?.writeText(g.code || "")
-                    .then(() => {
-                      // quick feedback; replace with toast if you have one
-                      alert("Code copied to clipboard");
-                    })
-                    .catch(() => alert("Copy failed"));
-                }}
-                className="text-sm text-gray-600 hover:text-gray-800"
-                title="Copy code"
-              >
-                Copy
-              </button>
+// health
+app.get("/healthz", (req, res) => res.json({ ok: true }));
 
-              {/* Download raw code */}
-              <button
-                onClick={() => {
-                  const blob = new Blob([g.code || ""], {
-                    type: "text/plain;charset=utf-8",
-                  });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = `snippet.${mapLanguageForPrism(
-                    g.language?.slug || "txt"
-                  )}`;
-                  document.body.appendChild(a);
-                  a.click();
-                  a.remove();
-                  URL.revokeObjectURL(url);
-                }}
-                className="text-sm text-gray-600 hover:text-gray-800"
-              >
-                Download
-              </button>
-            </div>
-          </div>
-        ))}
+// error handler (last)
+app.use(errorHandler);
 
-        <Pagination page={page} setPage={setPage} total={total} limit={limit} />
-      </div>
-    </>
-  );
-}
+// start
+const port = process.env.PORT || 8000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
-
-
-modal.jsx
-import React, { useEffect } from "react";
-export default function Modal({ open, onClose, title, children }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    // prevent background scroll while modal is open
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      role="dialog"
-      aria-modal="true"
-    >
-      {/* backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* modal panel */}
-      <div className="relative z-10 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden bg-white dark:bg-slate-900">
-        <div className="flex items-center justify-between px-5 py-3 border-b">
-          <div className="flex flex-col">
-            <h3 className="text-lg font-semibold">{title || "Code"}</h3>
-            <div className="text-xs text-gray-500">
-              Press <span className="font-medium">Esc</span> to close
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close modal"
-            className="rounded px-2 py-1 hover:bg-gray-100"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="p-4 max-h-[70vh] overflow-auto">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-
-
-navbar.jsx
-import React from "react";
-
-export default function Navbar() {
-  return (
-    <nav className="w-full py-4">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3F5EFB] to-[#8A2387] flex items-center justify-center text-white font-bold">
-            CC
-          </div>
-          <div>
-            <div className="text-lg font-extrabold">Code Copilot</div>
-            <div className="text-xs text-gray-500">
-              Generate code instantly • Gemini 2.5 Flash
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button className="btn-accent text-sm px-4 py-2">
-            AutomationEdge
-          </button>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-
-Pagination.jsx
-import React from "react";
-
-export default function Pagination({ page, setPage, total = 0, limit = 10 }) {
-  const totalPages = Math.max(1, Math.ceil(total / limit));
-
-  return (
-    <div className="flex items-center justify-between mt-3">
-      <div className="text-sm text-gray-600">
-        Page {page} of {totalPages}
-      </div>
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page <= 1}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          disabled={page >= totalPages}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
-
-
-// src/components/PreviewModal.jsx
-import React, { useEffect, useMemo } from "react";
-import { createHighlightedPageHtml } from "../openCodePage";
-
-// Syntax highlighter (Prism) + okaidia theme
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-/**
- * PreviewModal (compact)
- * props:
- * - open: boolean
- * - onClose: fn
- * - title: string
- * - previewText: string (truncated preview)
- * - fullText: string (full code)
- * - filename: string (e.g. snippet.cpp)
- * - language: string (prism language, e.g. 'cpp')
- */
-export default function PreviewModal({
-  open,
-  onClose,
-  title,
-  previewText = "",
-  fullText = "",
-  filename = "snippet.txt",
-  language = "text",
-}) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  const openFullInNewTab = () => {
-    const html = createHighlightedPageHtml(fullText || "", {
-      title: title || filename,
-      language: language || "text",
-      filename: filename || "snippet.txt",
-      theme: "okaidia",
-    });
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank", "noopener,noreferrer");
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-  };
-
-  const copyFullToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(fullText || "");
-      alert("Full code copied to clipboard");
-    } catch {
-      alert("Copy failed");
-    }
-  };
-
-  // memoize small preview/highlight to avoid re-rendering heavy highlighting repeatedly
-  const memoPreview = useMemo(
-    () => previewText || (fullText || "").slice(0, 800),
-    [previewText, fullText]
-  );
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-
-      <div
-        role="dialog"
-        aria-modal="true"
-        className="relative z-10 w-full max-w-xl rounded-xl shadow-xl bg-white dark:bg-slate-900 border overflow-hidden"
-      >
-        <div className="flex items-center justify-between px-4 py-2 border-b">
-          <div className="text-sm font-medium">{title || "Preview"}</div>
-          <button
-            onClick={onClose}
-            aria-label="Close preview"
-            className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-800"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="p-4">
-          {/* small highlighted preview (scrollable) */}
-          <div
-            className="rounded-md font-mono text-sm leading-6 p-1 max-h-48 overflow-auto border"
-            style={{ background: "transparent" }}
-          >
-            <SyntaxHighlighter
-              language={language}
-              style={okaidia}
-              showLineNumbers={false}
-              wrapLongLines
-              customStyle={{
-                margin: 0,
-                padding: "0.5rem",
-                background: "transparent",
-                borderRadius: 6,
-              }}
-            >
-              {memoPreview}
-            </SyntaxHighlighter>
-          </div>
-
-          <div className="mt-3 flex gap-2">
-            <button
-              onClick={openFullInNewTab}
-              className="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-            >
-              View full code
-            </button>
-
-            <button
-              onClick={copyFullToClipboard}
-              className="px-3 py-2 rounded border hover:bg-gray-50"
-            >
-              Copy full code
-            </button>
-
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                const blob = new Blob([fullText || ""], {
-                  type: "text/plain;charset=utf-8",
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = filename || "snippet.txt";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(url);
-              }}
-              href="#"
-              className="px-3 py-2 rounded border hover:bg-gray-50 inline-block"
-            >
-              Download
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// src/components/PromptForm.jsx  
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postGenerate } from "../api.js";
-import CodeViewer from "./CodeViewer.jsx";
-import Spinner from "./Spinner.jsx";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
-
-export default function PromptForm({ languages = [] }) {
-  const [prompt, setPrompt] = useState("");
-  const [languageId, setLanguageId] = useState(languages[0]?.id || "");
-  const [generated, setGenerated] = useState(null);
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: postGenerate,
-    onSuccess: (data) => {
-      setGenerated(data.generation);
-      setPrompt("");
-      queryClient.invalidateQueries({ queryKey: ["history"] });
-    },
-    onError: (err) => {
-      alert("Failed: " + (err.message || "Try again"));
-    },
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!prompt.trim() || !languageId) return;
-
-    mutation.mutate({
-      prompt: prompt.trim(),
-      languageId: Number(languageId),
-    });
-  };
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Generate Code</h2>
-        <div className="text-sm text-gray-500">
-          AI model: <span className="font-medium">Gemini 2.5 Flash</span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium mb-2">
-              What do you want?
-            </label>
-            <textarea
-              rows={6}
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="e.g. Create a debounce hook in React"
-              className="w-full p-4 rounded-lg border border-gray-200 bg-white/60 font-mono text-sm resize-y"
-              required
-            />
-
-            <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
-              <div>Tip: be explicit about inputs, outputs & constraints.</div>
-              <div className="ml-auto">Characters: {prompt.length}</div>
-            </div>
-          </div>
-
-          <div className="md:col-span-1 flex flex-col gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Language</label>
-              <select
-                value={languageId}
-                onChange={(e) => setLanguageId(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg"
-                required
-              >
-                <option value="">Select language</option>
-                {languages.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="submit"
-                disabled={mutation.isPending}
-                className={`btn-accent w-full ${
-                  mutation.isPending ? "opacity-80" : ""
-                }`}
-              >
-                {mutation.isPending ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <Spinner /> Generating…
-                  </div>
-                ) : (
-                  "Generate Code"
-                )}
-              </button>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2">
-              Recent model runs and history are saved in the sidebar — you can
-              revisit any snippet.
-            </div>
-          </div>
-        </div>
-      </form>
-
-      {generated && (
-        <div className="mt-6 border-t pt-6 animate-fade-in">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-sm text-gray-600">
-              Generated {dayjs(generated.createdAt).fromNow()}
-            </div>
-            <div className="text-sm font-medium text-green-600">
-              ✓ {generated.modelName}
-            </div>
-          </div>
-
-          <div className="code-wrap">
-            <CodeViewer
-              code={generated.code || ""}
-              languageKey={generated.language?.slug || "plaintext"} // logic unchanged
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-spinner.jsx
-export default function Spinner({ size = 24 }) {
-  // `size` is in pixels; default 24px (matches Tailwind w-6/h-6 visually)
-  return (
-    <span
-      role="status"
-      aria-label="loading"
-      style={{ width: size, height: size, display: "inline-block" }}
-      className="rounded-full border-2 border-t-transparent border-gray-300 animate-spin"
-    />
-  );
-}
-
+render service/.env
 

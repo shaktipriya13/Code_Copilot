@@ -23,7 +23,7 @@ import { historyHandler } from "./controllers/history.controller.js";
 
 const app = express();
 
-const FRONTEND = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
+const FRONTEND = process.env.FRONTEND_ORIaGIN || "http://localhost:5173";
 app.use(cors({ origin: FRONTEND }));
 app.use(helmet());
 app.use(express.json({ limit: "1mb" }));
