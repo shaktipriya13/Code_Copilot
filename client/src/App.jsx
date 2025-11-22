@@ -63,6 +63,9 @@ export default function App() {
 
         <Home languages={languages} />
       </div>
+      <div className="text-center font-medium mt-2 mb-0">
+        Designed & Created by Shakti Priya 🧡
+      </div>
     </div>
   );
 }
