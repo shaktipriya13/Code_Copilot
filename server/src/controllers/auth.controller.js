@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import Joi from "joi";
 import { signToken } from "../middleware/auth.js";
 
-// -------------------- Schemas --------------------
 export const registerSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
@@ -14,7 +13,6 @@ export const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-// -------------------- Register Handler --------------------
 export const registerHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -41,7 +39,6 @@ export const registerHandler = async (req, res, next) => {
   }
 };
 
-// -------------------- Login Handler --------------------
 export const loginHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;

@@ -5,12 +5,7 @@ if (!OPENAI_API_KEY) {
   console.warn("WARNING: OPENAI_API_KEY is not set");
 }
 
-/**
- * generateCode(prompt, languageName)
- * Returns { code, tokensUsed, modelName }
- */
 async function generateCode(prompt, languageName, model = "gpt-4o") {
-  // Minimal chat request
   const systemPrompt = `You are a helpful code assistant. When asked to generate code, return only the code block (no surrounding explanation). Use ${languageName} syntax.`;
   try {
     const response = await axios.post(
@@ -37,7 +32,6 @@ async function generateCode(prompt, languageName, model = "gpt-4o") {
     const tokens = response.data.usage?.total_tokens ?? null;
     return { code: text, tokensUsed: tokens, modelName: model };
   } catch (err) {
-    // Re-throw a cleaned up error
     const message =
       err?.response?.data || err.message || "OpenAI request failed";
     throw new Error(JSON.stringify(message));
