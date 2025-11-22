@@ -17,10 +17,13 @@ export function createHighlightedPageHtml(
 ) {
   const raw = String(code || "");
   const escaped = escapeHtml(raw);
+
   const fontUrl = `https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap`;
   const prismCss = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-${theme}.min.css`;
   const prismCore = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js`;
   const prismLang = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-${language}.min.js`;
+
+  const localFaviconPath = "/mnt/data/af80e4c9-2d38-418d-8a0d-1bb8755efa01.png";
 
   return `<!doctype html>
 <html lang="en">
@@ -28,18 +31,21 @@ export function createHighlightedPageHtml(
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>${escapeHtml(title)}</title>
-<link rel="icon" href="/logo.jpg">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${fontUrl}">
+
+<link rel="icon" href="${localFaviconPath}">
+
 <link rel="stylesheet" href="${prismCss}">
 <style>
   :root{
-    /* Colors derived from the image */
-    --deep-orange: #FF5722;      /* Deep, slightly reddish orange */
-    --deep-orange-accent: #FF8A2E; /* Brighter, yellowish orange accent */
-    --bg-dark: #111111;          /* Clean Black */
-    --bg-light: #1A1A1A;         /* Slightly lighter black for separation */
-    --text-primary: #E8E8E8;     /* Off-White */
-    --text-secondary: #AAAAAA;   /* Gray/Muted */
+    --deep-orange: #FF5722;
+    --deep-orange-accent: #FF8A2E;
+    --bg-dark: #111111;
+    --bg-light: #1A1A1A;
+    --text-primary: #E8E8E8;
+    --text-secondary: #AAAAAA;
     --border-light: rgba(255, 255, 255, 0.15);
   }
   html,body{height:100%; margin:0; font-family:'Inter', sans-serif; box-sizing: border-box;}
@@ -53,14 +59,13 @@ export function createHighlightedPageHtml(
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
   }
-  
-  /* --- Top Bar Styling --- */
+
   .topbar{
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding: 16px 40px;
-    background-color: var(--bg-light); 
+    background-color: var(--bg-light);
     border-bottom: 1px solid var(--border-light);
   }
   .brand{
@@ -68,20 +73,28 @@ export function createHighlightedPageHtml(
     gap:10px;
     align-items:center;
   }
+
   .logo{
-    width:40px; /* Slightly larger for better visual impact */
-    height:40px; /* Slightly larger for better visual impact */
-    border-radius:8px; /* Slightly larger border-radius */
+    width:40px;
+    height:40px;
+    border-radius:8px;
     display:inline-grid;
     place-items:center;
-    font-weight:700;
-    font-size:18px; /* Larger font size for 'CC' */
-    color: #000000; /* Pure black text for contrast */
-    /* Matching the logo gradient from the image, refined */
-    background: linear-gradient(135deg, #FF7B00, #FF3D00); /* Adjusted colors for closer match */
-    border: 1px solid rgba(255, 255, 255, 0.6); /* White border with some transparency */
-    box-shadow: 0 4px 10px rgba(255, 123, 0, 0.4); /* Orange glow effect */
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-weight:800;
+    font-size:18px;
+    line-height:1;
+    letter-spacing:0.2px;
+    color:#000000;
+    background: linear-gradient(135deg, rgb(204,78,0) 0%, rgb(255,112,40) 55%, #1f1f1f 100%);
+    border: 1px solid #ffffff;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25), 0 2px 4px rgba(255,123,0,0.08);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
   }
+
   .title .main{
     font-weight:700;
     font-size:18px;
@@ -105,8 +118,7 @@ export function createHighlightedPageHtml(
     cursor:pointer;
     text-decoration:none;
     transition: opacity 0.2s;
-    /* Matching the button gradient from the image */
-    background: linear-gradient(90deg, var(--deep-orange), var(--deep-orange-accent)); 
+    background: linear-gradient(90deg, var(--deep-orange), var(--deep-orange-accent));
   }
   .btn:hover{opacity: 0.9;}
   .btn.secondary{
@@ -117,7 +129,6 @@ export function createHighlightedPageHtml(
   }
   .btn.secondary:hover{border-color: var(--deep-orange); opacity: 0.9;}
 
-  /* --- Main Content Styling --- */
   .container{
     padding:40px;
     flex:1;
@@ -158,7 +169,7 @@ export function createHighlightedPageHtml(
   .file-pill{
     padding:4px 8px;
     border-radius:4px;
-    background-color: rgba(255, 87, 34, 0.1); 
+    background-color: rgba(255, 87, 34, 0.1);
     border: 1px solid var(--deep-orange);
     color: var(--deep-orange);
     font-weight:600;
@@ -175,8 +186,7 @@ export function createHighlightedPageHtml(
     max-height: calc(100vh - 200px);
   }
   .meta{color: var(--text-secondary); font-size:13px;}
-  
-  /* --- Sidebar Styling --- */
+
   .sidebar{
     width:300px;
     flex-shrink: 0;
@@ -205,8 +215,7 @@ export function createHighlightedPageHtml(
     font-weight:500;
     font-size:12px;
   }
-  
-  /* --- Footer Styling --- */
+
   .footer{
     padding:14px 40px;
     text-align:center;
@@ -216,8 +225,7 @@ export function createHighlightedPageHtml(
     background-color: var(--bg-light);
   }
   a,button{outline:none;}
-  
-  /* --- Media Queries --- */
+
   @media (max-width:1080px){
     .container{flex-direction:column; gap:20px; padding:20px; max-width: 100%;}
     .sidebar{width:100%;}
@@ -264,9 +272,7 @@ export function createHighlightedPageHtml(
   )}">${escaped}</code></pre>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:4px;">
-       
         <div style="display:flex; gap:8px;">
-          <!-- "Open in New Tab" button removed as requested -->
         </div>
       </div>
     </div>
@@ -285,7 +291,6 @@ export function createHighlightedPageHtml(
         }</strong></div></div>
         <div class="action-row">
           <div class="badge">Read-only</div>
-          
         </div>
       </div>
 

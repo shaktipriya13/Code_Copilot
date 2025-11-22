@@ -19,7 +19,7 @@ export default function App() {
         <div className="text-center">
           <div className="loader mx-auto mb-4" />
           <div className="text-lg font-semibold text-deep-orange-300">
-            Loading languages…
+            Loading Code Copilot...
           </div>
         </div>
       </div>
