@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+
+model User {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String
+  generations Generation[]
+  createdAt  DateTime     @default(now())
+}
+
+model Language {
+  id         Int          @id @default(autoincrement())
+  name       String
+  slug       String       @unique
+  extension  String
+  generations Generation[]
+}
+
+model Generation {
+  id          Int      @id @default(autoincrement())
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+  language    Language @relation(fields: [languageId], references: [id])
+  languageId  Int
+  prompt      String
+  code        String   @db.LongText
+  modelName   String?
+  tokensUsed  Int?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([languageId])
+  @@index([userId])
+}

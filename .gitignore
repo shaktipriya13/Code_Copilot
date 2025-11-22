@@ -1,0 +1,27 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
+
+# Vite / Build
+dist/
+.vite/
+.cache/
+
+# Prisma client (generated)
+prisma/client/
+
+# Editor folders
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
